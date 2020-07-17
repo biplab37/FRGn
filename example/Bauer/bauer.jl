@@ -1,20 +1,20 @@
 #########################################################################################
 ###    This code solves the exact FRG equations numerically for graphene near Dirac   ###
-###    points. Here we have introduced a cutoff for the Bososnic momenta as well.     ###
+###    points. This is to reproduce the result by Bauer et al.                        ###
 #########################################################################################
 
 using FRGn
 
 ## Initialisation
 
-const m = 198 # number of cutoffs
-const n = 209 # number of momenta
+const m = 304 # number of cutoffs
+const n = 543 # number of momenta
 
 velocity = zeros(n,m)
 dielectric = zeros(n,m)
 
 @doc raw"""
-    velocity_integrand(momentum, cutoff, phi, m, n, i)
+    velocity_integrand(dielectric, momentum, cutoff, phi, m, n, i)
 
 This function returns the integrand of the FRG equation for the velocity renormlisation.
 ## Args
@@ -28,20 +28,26 @@ This function returns the integrand of the FRG equation for the velocity renorml
 """
 function velocity_integrand(dielectric::Array{Float64,2}, momentum::Float64, cutoff::Float64, phi::Float64, m::Int64, n::Int64, i::Int64)
     ## Theta function implementation with conditional
-    if cos(phi)<=1 - 2*cutoff/momentum
+
+    k = sqrt(cutoff^2 + momentum^2 - 2*cutoff*momentum*cos(2.0*phi))
+
+    index = Int64(round(k*n))+1
+
+    if index<=n
+        epsilon::Float64 = dielectric[index,m-i+2]
+    else
+        epsilon = 1.0 # if the index goes out of the boundary take dielectric to be the free space one.
+    end
+
+    if k==0
         return 0.0
     else
-        k1 = cutoff
-        k2 = cutoff + cos(phi)*momentum
-
-        eps1,eps2 = get_dielectric(dielectric, k1, k2, m, n, i)
-
-        return 2.2*((momentum^2 - k1^2 + k2^2)/(momentum^2*eps1) + (momentum^2 + k1^2 - k2^2)/(momentum^2*eps2))/(2.0*pi*sqrt((k1+k2)^2 - momentum^2))
+        return 2.2*cos(2.0*phi)*cutoff/(2*pi*epsilon*momentum*k)
     end
 end
 
 @doc raw"""
-    dielectric_integrand(momentum, cutoff, phi, m, n, i)
+    dielectric_integrand(velocity, momentum, cutoff, phi, m, n, i)
 
 This function returns the integrand of the FRG equation for the dielectric function renormlisation.
 ## Args
@@ -78,14 +84,14 @@ rg_procedure(velocity,dielectric,velocity_integrand, dielectric_integrand ,m,n)
 
 ## Plots using user defined functions in FRGn Package
 
-plot_velocity(velocity[:,1])
+# plot_velocity(velocity[:,1])
 
-plot_dielectric(dielectric[:,1])
+# plot_dielectric(dielectric[:,1])
 
 ## Save the data for future usage
-# using JLD
-# save("coupled.jld","velocity",velocity,"dielectric",dielectric)
+using JLD
+save("bauer.jld","velocity",velocity,"dielectric",dielectric)
 
-# using HDF5
-# h5write("coupled.h5","velocity",velocity)
-# h5write("coupled.h5","dielectric",dielectric)
+using HDF5
+h5write("bauer.h5","velocity",velocity)
+h5write("bauer.h5","dielectric",dielectric)

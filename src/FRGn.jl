@@ -40,7 +40,7 @@ using .RGProcedure
 
 ## make the functions global
 export plot_velocity, plot_dielectric
-export get_velocity, get_dielectric
+export get_velocity, get_dielectric, get_velocityo, get_dielectrico
 export rg_procedure
 
 end # module
