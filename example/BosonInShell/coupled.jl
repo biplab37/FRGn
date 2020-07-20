@@ -14,19 +14,20 @@ velocity = zeros(n,m)
 dielectric = zeros(n,m)
 
 @doc raw"""
-    velocity_integrand(momentum, cutoff, phi, m, n, i)
+    velocity_integrand(velocity::Array{Float64,2},dielectric::Array{Float64,2}, momentum::Float64, cutoff::Float64, phi::Float64, m::Int64, n::Int64, i::Int64)
 
 This function returns the integrand of the FRG equation for the velocity renormlisation.
 ## Args
+    velocity   (Array) : The velocity array
     dielectric (Array) : Array containing the dielectric values
     momentum (Float64) : momentum value
     cutoff   (FLoat64) : running cutoff
-    phi      (Float64) : angular coordinate
+    phi      (Float64) : angular coordinate (should run from 0 to pi/2)
     m          (Int64) : number of cutoffs
     n          (Int64) : number of momenta
     i          (Int64) : index for the running cutoff
 """
-function velocity_integrand(dielectric::Array{Float64,2}, momentum::Float64, cutoff::Float64, phi::Float64, m::Int64, n::Int64, i::Int64)
+function velocity_integrand(velocity::Array{Float64,2},dielectric::Array{Float64,2}, momentum::Float64, cutoff::Float64, phi::Float64, m::Int64, n::Int64, i::Int64)
     ## Theta function implementation with conditional
     if cos(phi)<=1 - 2*cutoff/momentum
         return 0.0
@@ -41,11 +42,12 @@ function velocity_integrand(dielectric::Array{Float64,2}, momentum::Float64, cut
 end
 
 @doc raw"""
-    dielectric_integrand(momentum, cutoff, phi, m, n, i)
+    dielectric_integrand(velocity::Array{Float64,2},dielectric::Array{Float64,2}, momentum::Float64, cutoff::Float64, phi::Float64, m::Int64, n::Int64, i::Int64)
 
 This function returns the integrand of the FRG equation for the dielectric function renormlisation.
 ## Args
     velocity   (Array) : The velocity array
+    dielectric (Array) : Array containing the dielectric values
     momentum (Float64) : momentum value
     cutoff   (FLoat64) : running cutoff
     phi      (Float64) : angular coordinate
@@ -53,7 +55,7 @@ This function returns the integrand of the FRG equation for the dielectric funct
     n          (Int64) : number of momenta
     i          (Int64) : index for the running cutoff
 """
-function dielectric_integrand(velocity::Array{Float64,2}, momentum::Float64, cutoff::Float64, phi::Float64, m::Int64, n::Int64, i::Int64)
+function dielectric_integrand(velocity::Array{Float64,2},dielectric::Array{Float64,2}, momentum::Float64, cutoff::Float64, phi::Float64, m::Int64, n::Int64, i::Int64)
     ## Theta function implementation
     if cos(phi)<=1 - 2*cutoff/momentum
         return 0.0

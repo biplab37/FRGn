@@ -14,7 +14,7 @@ velocity = zeros(n,m)
 dielectric = zeros(n,m)
 
 @doc raw"""
-    velocity_integrand(dielectric, momentum, cutoff, phi, m, n, i)
+    velocity_integrand(velocity::Array{Float64,2},dielectric::Array{Float64,2}, momentum::Float64, cutoff::Float64, phi::Float64, m::Int64, n::Int64, i::Int64)
 
 This function returns the integrand of the FRG equation for the velocity renormlisation.
 ## Args
@@ -26,7 +26,7 @@ This function returns the integrand of the FRG equation for the velocity renorml
     n          (Int64) : number of momenta
     i          (Int64) : index for the running cutoff
 """
-function velocity_integrand(dielectric::Array{Float64,2}, momentum::Float64, cutoff::Float64, phi::Float64, m::Int64, n::Int64, i::Int64)
+function velocity_integrand(velocity::Array{Float64,2},dielectric::Array{Float64,2}, momentum::Float64, cutoff::Float64, phi::Float64, m::Int64, n::Int64, i::Int64)
     ## Theta function implementation with conditional
 
     k = sqrt(cutoff^2 + momentum^2 - 2*cutoff*momentum*cos(2.0*phi))
@@ -47,7 +47,7 @@ function velocity_integrand(dielectric::Array{Float64,2}, momentum::Float64, cut
 end
 
 @doc raw"""
-    dielectric_integrand(velocity, momentum, cutoff, phi, m, n, i)
+    dielectric_integrand(velocity::Array{Float64,2},dielectric::Array{Float64,2}, momentum::Float64, cutoff::Float64, phi::Float64, m::Int64, n::Int64, i::Int64)
 
 This function returns the integrand of the FRG equation for the dielectric function renormlisation.
 ## Args
@@ -59,7 +59,7 @@ This function returns the integrand of the FRG equation for the dielectric funct
     n          (Int64) : number of momenta
     i          (Int64) : index for the running cutoff
 """
-function dielectric_integrand(velocity::Array{Float64,2}, momentum::Float64, cutoff::Float64, phi::Float64, m::Int64, n::Int64, i::Int64)
+function dielectric_integrand(velocity::Array{Float64,2},dielectric::Array{Float64,2}, momentum::Float64, cutoff::Float64, phi::Float64, m::Int64, n::Int64, i::Int64)
     ## Theta function implementation
     if cos(phi)<=1 - 2*cutoff/momentum
         return 0.0
@@ -89,9 +89,9 @@ rg_procedure(velocity,dielectric,velocity_integrand, dielectric_integrand ,m,n)
 # plot_dielectric(dielectric[:,1])
 
 ## Save the data for future usage
-using JLD
-save("bauer.jld","velocity",velocity,"dielectric",dielectric)
+# using JLD
+# save("bauer.jld","velocity",velocity,"dielectric",dielectric)
 
-using HDF5
-h5write("bauer.h5","velocity",velocity)
-h5write("bauer.h5","dielectric",dielectric)
+# using HDF5
+# h5write("bauer.h5","velocity",velocity)
+# h5write("bauer.h5","dielectric",dielectric)
