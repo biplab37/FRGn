@@ -24,6 +24,24 @@ function get_velocity(velocity::Array{Float64,2}, k1::Float64, k2::Float64, m::I
 end
 
 @doc raw"""
+    get_velocity(velocity::Array{Float64,2}, k::Float64, m::Int64, n::Int64, i::Int64)
+
+Returns the velocities at momenta k at the previous cutoff (indexed m-i+2).
+"""
+function get_velocity(velocity::Array{Float64,2}, k::Float64, m::Int64, n::Int64, i::Int64)
+
+    index = Int64(round(k))
+
+    if index<n
+        vel::Float64 = velocity[index,m-i+2]
+    else
+        vel = 1.0 # if the index goes out of the boundary take velocity to be v_F.
+    end
+
+    return vel
+end
+
+@doc raw"""
     get_dielctric(dielctric::Array{Float64,2}, k1::Float64, k2::Float64, m::Int64, n::Int64, i::Int64)
 
 Returns the dielectric functions at momenta k1 and k2 at the previous cutoff (indexed m-i+2).
@@ -42,6 +60,24 @@ function get_dielectric(dielectric::Array{Float64,2}, k1::Float64, k2::Float64, 
     end
 
     return eps1,eps2
+end
+
+@doc raw"""
+    get_dielctric(dielctric::Array{Float64,2}, k::Float64, m::Int64, n::Int64, i::Int64)
+
+Returns the dielectric functions at momenta k at the previous cutoff (indexed m-i+2).
+"""
+function get_dielectric(dielectric::Array{Float64,2}, k::Float64, m::Int64, n::Int64, i::Int64)
+
+    index = Int64(round(k*n))
+
+    if index<n
+        eps1::Float64 = dielectric[index,m-i+2]
+    else
+        eps1 = 1.0 # if the index goes out of the boundary take dielectric to be the free space one.
+    end
+
+    return eps1
 end
 
 end
