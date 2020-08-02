@@ -28,8 +28,8 @@ function rg_procedure(velocity::Array{Float64,2}, dielectric::Array{Float64,2}, 
 
             momentum = Float64(j)/n
 
-            velocity_integrand_phi(phi) = velocity_integrand(velocity,dielectric,momentum,cutoff,phi,m,n,i)
-            dielectric_integrand_phi(phi) = dielectric_integrand(velocity,dielectric,momentum,cutoff,phi,m,n,i)
+            velocity_integrand_phi(phi) = velocity_integrand(velocity,dielectric,momentum,cutoff,phi,m,n)
+            dielectric_integrand_phi(phi) = dielectric_integrand(velocity,dielectric,momentum,cutoff,phi,m,n)
             ## Solving ODE's using Euler method
             velocity[j,m-i+1] = velocity[j,m-i+2] + dcutoff*quadgk(velocity_integrand_phi,0.,pi/2.,rtol=1e-4)[1]
             dielectric[j,m-i+1] = dielectric[j,m-i+2] + dcutoff*quadgk(dielectric_integrand_phi,0.,pi/2.,rtol=1e-4)[1]
@@ -49,6 +49,10 @@ function rg_procedure(functions::Array{Array{Float64,2},1}, functions_integrand:
 
     dcutoff::Float64 = 1.0/m
 
+    if length(functions) != length(functions_integrand)
+        error("Number of functions does not match number of integrands!")        
+    end
+
     for i in 2:m
 
         cutoff = Float64(m - i +1)/m
@@ -58,7 +62,7 @@ function rg_procedure(functions::Array{Array{Float64,2},1}, functions_integrand:
             momentum = Float64(j)/n
 
             for k in 1:length(functions)
-                integrand_phi(phi) = functions_integrand[k](functions,momentum,cutoff,phi,m,n,i)
+                integrand_phi(phi) = functions_integrand[k](functions,momentum,cutoff,phi,m,n)
                 functions[k][j,m-i+1] = functions[k][j,m-i+2] + dcutoff*quadgk(integrand_phi,0.,pi/2.,rtol=1e-4)[1]
             end
         end

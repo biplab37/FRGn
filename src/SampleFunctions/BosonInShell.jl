@@ -1,17 +1,6 @@
-#########################################################################################
-###    This code solves the exact FRG equations numerically for graphene near Dirac   ###
-###    points. Here we have introduced a cutoff for the Bososnic momenta as well.     ###
-#########################################################################################
+module BosonInShell
 
-using FRGn
-
-## Initialisation
-
-const m = 329 # number of cutoffs
-const n = 343 # number of momenta
-
-velocity = zeros(n,m)
-dielectric = zeros(n,m)
+export velocity_integrand, dielectric_integrand
 
 @doc raw"""
     velocity_integrand(velocity::Array{Float64,2},dielectric::Array{Float64,2}, momentum::Float64, cutoff::Float64, phi::Float64, m::Int64, n::Int64)
@@ -67,25 +56,4 @@ function dielectric_integrand(velocity::Array{Float64,2},dielectric::Array{Float
     end
 end
 
-## Boundary values initialisation
-velocity[:,m] .= 1.0
-dielectric[:,m] .= 1.0
-
-## solving exact FRG using an user defined function from FRGn Package
-
-rg_procedure(velocity,dielectric,velocity_integrand, dielectric_integrand ,m,n)
-
-
-## Plots using user defined functions in FRGn Package
-
-plot_velocity(velocity[:,1])
-
-plot_dielectric(dielectric[:,1])
-
-## Save the data for future usage
-# using JLD
-# save("coupled.jld","velocity",velocity,"dielectric",dielectric)
-
-# using HDF5
-# h5write("coupled.h5","velocity",velocity)
-# h5write("coupled.h5","dielectric",dielectric)
+end

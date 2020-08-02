@@ -15,20 +15,18 @@ dielectric = zeros(n,m)
 dielectric2 = zeros(n,m)
 
 @doc raw"""
-    velocity_integrand(velocity::Array{Float64,2},dielectric::Array{Float64,2}, momentum::Float64, cutoff::Float64, phi::Float64, m::Int64, n::Int64, i::Int64)
+    velocity_integrand(functions, momentum::Float64, cutoff::Float64, phi::Float64, m::Int64, n::Int64)
 
 This function returns the integrand of the FRG equation for the velocity renormlisation.
 ## Args
-    velocity   (Array) : The velocity array
-    dielectric (Array) : Array containing the dielectric values
+    functions  (Array) : An Array of all the functions whose derivatives are to be solved.
     momentum (Float64) : momentum value
     cutoff   (FLoat64) : running cutoff
     phi      (Float64) : angular coordinate (should run from 0 to pi/2)
     m          (Int64) : number of cutoffs
     n          (Int64) : number of momenta
-    i          (Int64) : index for the running cutoff
 """
-function velocity_integrand(functions, momentum::Float64, cutoff::Float64, phi::Float64, m::Int64, n::Int64, i::Int64)
+function velocity_integrand(functions, momentum::Float64, cutoff::Float64, phi::Float64, m::Int64, n::Int64)
     ## Theta function implementation with conditional
     if cos(phi)<=1 - 2*cutoff/momentum
         return 0.0
@@ -36,27 +34,25 @@ function velocity_integrand(functions, momentum::Float64, cutoff::Float64, phi::
         k1 = cutoff
         k2 = cutoff + cos(phi)*momentum
 
-        eps1,eps2 = get_dielectric(functions[2], k1, k2, m, n, i)
+        eps1,eps2 = get_dielectric(functions[2], k1, k2, cutoff,m, n)
 
         return 2.2*((momentum^2 - k1^2 + k2^2)/(momentum^2*eps1) + (momentum^2 + k1^2 - k2^2)/(momentum^2*eps2))/(2.0*pi*sqrt((k1+k2)^2 - momentum^2))
     end
 end
 
 @doc raw"""
-    dielectric_integrand(velocity::Array{Float64,2},dielectric::Array{Float64,2}, momentum::Float64, cutoff::Float64, phi::Float64, m::Int64, n::Int64, i::Int64)
+    dielectric_integrand(velocity::Array{Float64,2},dielectric::Array{Float64,2}, momentum::Float64, cutoff::Float64, phi::Float64, m::Int64, n::Int64)
 
 This function returns the integrand of the FRG equation for the dielectric function renormlisation.
 ## Args
-    velocity   (Array) : The velocity array
-    dielectric (Array) : Array containing the dielectric values
+    functions  (Array) : An Array of all the functions whose derivatives are to be solved.
     momentum (Float64) : momentum value
     cutoff   (FLoat64) : running cutoff
     phi      (Float64) : angular coordinate
     m          (Int64) : number of cutoffs
     n          (Int64) : number of momenta
-    i          (Int64) : index for the running cutoff
 """
-function dielectric_integrand(functions, momentum::Float64, cutoff::Float64, phi::Float64, m::Int64, n::Int64, i::Int64)
+function dielectric_integrand(functions, momentum::Float64, cutoff::Float64, phi::Float64, m::Int64, n::Int64)
     ## Theta function implementation
     if cos(phi)<=1 - 2*cutoff/momentum
         return 0.0
@@ -70,14 +66,26 @@ function dielectric_integrand(functions, momentum::Float64, cutoff::Float64, phi
     end
 end
 
-function dielectric2_integrand(functions, momentum::Float64, cutoff::Float64, phi::Float64, m::Int64, n::Int64, i::Int64)
+@doc raw"""
+    dielectric_integrand(velocity::Array{Float64,2},dielectric::Array{Float64,2}, momentum::Float64, cutoff::Float64, phi::Float64, m::Int64, n::Int64)
+
+This function returns the integrand of the FRG equation for the correction to the dielectric function (order ω^2) renormlisation.
+## Args
+    functions  (Array) : An Array of all the functions whose derivatives are to be solved.
+    momentum (Float64) : momentum value
+    cutoff   (FLoat64) : running cutoff
+    phi      (Float64) : angular coordinate
+    m          (Int64) : number of cutoffs
+    n          (Int64) : number of momenta
+"""
+function dielectric2_integrand(functions, momentum::Float64, cutoff::Float64, phi::Float64, m::Int64, n::Int64)
     if cos(phi)<=1 - 2*cutoff/momentum
         return 0.0
     else
         k1 = cutoff
         k2 = cutoff + cos(phi)*momentum
 
-        vel1, vel2 = get_velocity(functions[1], k1, k2, m, n, i)
+        vel1, vel2 = get_velocity(functions[1], k1, k2, cutoff, m, n)
 
         return -4.4*momentum*sin(phi)^2/(pi*(k1*vel1 + k2*vel2)^3*sqrt((k1+k2)^2 - momentum^2))
     end

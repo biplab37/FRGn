@@ -6,6 +6,7 @@ This package contain the subroutines that are frequently shared between differen
 Following functions are available in this package.
  - get_velocity
  - get_dielectric
+ - fetch_value
  - rg_procedure
  - plot_velocity
  - plot_dielctric
@@ -33,14 +34,26 @@ include("Plotting.jl")
 include("GetVelEps.jl")
 include("RGProcedure.jl")
 
+include("SampleFunctions/Bauer.jl")
+include("SampleFunctions/BosonInShell.jl")
+include("SampleFunctions/FiniteTemp.jl")
+
+include("Functions/randomfuncitons.jl")
+
 ## import all the submodules
 using .Plotting
 using .GetVelEps
 using .RGProcedure
+using .Bauer
+using .BosonInShell
+using .FiniteTemp
+using .functions
 
 ## make the functions global
 export plot_velocity, plot_dielectric
-export get_velocity, get_dielectric, get_velocityo, get_dielectrico
+export get_velocity, get_dielectric, fetch_value
 export rg_procedure
+export velocity_integrand, dielectric_integrand
+export Hilbert
 
 end # module
