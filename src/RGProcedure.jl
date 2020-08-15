@@ -68,4 +68,62 @@ function rg_procedure(functions::Array{Array{Float64,2},1}, functions_integrand:
         end
     end
 end
+
+function rg_procedure(property::Array{Float64,2},integrand_function::Function,m::Int64,n::Int64)
+
+    dcutoff::Float64 = 1.0/n
+
+    for i in 2:m
+
+        cutoff = Float64(m-i+1)/m
+
+        for j in 1:n
+
+            momentum = Float64(j)/n
+
+            integrand_phi(phi) = integrand_function(property,momentum,cutoff,phi,m,n)
+            property[j,m-i+1] = property[j,m-i+2] + dcutoff*quadgk(integrand_phi,0.0,pi/2,rtol=1e-4)[1]
+            
+        end
+        
+    end
+    
+end
+
+function rg_procedure(property::Array{Float64,2},integrand_function::Function,m::Int64,n::Int64,extra_arguments::Array{Float64})
+
+    dcutoff::Float64 = 1.0/n
+
+    for i in 2:m
+
+        cutoff = Float64(m-i+1)/m
+
+        for j in 1:n
+
+            momentum = Float64(j)/n
+
+            integrand_phi(phi) = integrand_function(property,momentum,cutoff,phi,m,n,extra_arguments)
+            property[j,m-i+1] = property[j,m-i+2] + dcutoff*quadgk(integrand_phi,0.0,pi/2,rtol=1e-4)[1]
+            
+        end
+        
+    end
+    
+end
+
+function rg_procedure(property::Array{Float64,1},integrand_function::Function,momentum::Float64,m::Int64,n::Int64,extra_arguments::Array{Float64})
+
+    dcutoff::Float64 = 1.0/n
+
+    for i in 2:m
+
+        cutoff = Float64(m-i+1)/m
+
+        integrand_phi(phi) = function_integrand(property,momentum,cutoff,phi,m,n,extra_arguments)
+        property[m-i+1] = property[m-i+2] + dcutoff*quadgk(integrand_phi,0.0,pi/2,rtol=1e-4)[1]
+    
+    end
+    
+end
+
 end
