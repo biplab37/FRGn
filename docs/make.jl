@@ -10,3 +10,6 @@ makedocs(modules=[FRGn],
 		"Usage"=>"usage.md",
 		# hide("SubModules"=>["submodules/getveleps.md","submodules/plotting.md","submodules/rgprocedure.md"]),
 		hide("Indices"=>"indices.md")])
+
+deploydocs(
+	repo = "github.com/biplab37/FRGn.git")
