@@ -3,10 +3,10 @@ contains some of the useful functions that I use frequently.
 """
 module functions
 
-using PyCall, Interpolations
+using PyCall
 # using JLD, HDF5
 
-export Hilbert
+export Hilbert, interp
 
 @doc raw"""
     Hilbert(list::Array{Float,1})
@@ -43,8 +43,31 @@ end
 # 	end
 # end
 
-function interp(xlist::StepRangeLen,array::AbstractArray)
-    return scale(interpolate(array,BSpline(Quadratic(Reflect(OnCell())))),xlist)
+function itp(momentum::Float64,n::Int64,list::Array)
+
+    index1 = Int64(floor(n*momentum))
+    index2 = Int64(ceil(n*momentum))
+
+    if index1==0
+        return list[1]
+    elseif index2>n
+        return list[n]
+    else
+        if index1 == index2
+            return list[index1]
+        else
+            return list[index1] + (list[index2] - list[index1])*(n*momentum - index1)
+        end
+    end
+end
+
+@doc raw"""
+    function interp(n::Int64,list::Array)
+This function returns the interpolated function given an Array.
+"""
+function interp(n::Int64,list::Array)
+    itp2(momentum::Float64) = itp(momentum,n,list)
+    return itp2
 end
 
 end

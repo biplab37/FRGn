@@ -1,5 +1,7 @@
 module Bauer
 
+include("../GetVelEps.jl")
+
 export velocity_integrand, dielectric_integrand
 
 @doc raw"""
@@ -20,7 +22,21 @@ function velocity_integrand(velocity::Array{Float64,2},dielectric::Array{Float64
 
     k = sqrt(cutoff^2 + momentum^2 - 2*cutoff*momentum*cos(2.0*phi))
 
-    epsilon = get_dielectric(dielectric,k,cutoff,m,n)
+    epsilon = GetVelEps.get_dielectric(dielectric,k,cutoff,m,n)
+
+    if k==0
+        return 0.0
+    else
+        return 2.2*cos(2.0*phi)*cutoff/(2*pi*epsilon*momentum*k)
+    end
+end
+
+function velocity_integrand(velocity::Function,dielectric::Function, momentum::Float64, cutoff::Float64, phi::Float64)
+    ## Theta function implementation with conditional
+
+    k = sqrt(cutoff^2 + momentum^2 - 2*cutoff*momentum*cos(2.0*phi))
+
+    epsilon = dielectric(k)
 
     if k==0
         return 0.0
@@ -42,7 +58,7 @@ This function returns the integrand of the FRG equation for the dielectric funct
     n          (Int64) : number of momenta
     i          (Int64) : index for the running cutoff
 """
-function dielectric_integrand(velocity::Array{Float64,2},dielectric::Array{Float64,2}, momentum::Float64, cutoff::Float64, phi::Float64, m::Int64, n::Int64, i::Int64)
+function dielectric_integrand(velocity::Array{Float64,2},dielectric::Array{Float64,2}, momentum::Float64, cutoff::Float64, phi::Float64, m::Int64, n::Int64)
     ## Theta function implementation
     if cos(phi)<=1 - 2*cutoff/momentum
         return 0.0
@@ -50,7 +66,22 @@ function dielectric_integrand(velocity::Array{Float64,2},dielectric::Array{Float
         k1 = cutoff
         k2 = cutoff + cos(phi)*momentum
 
-        vel1, vel2 = get_velocity(velocity, k1, k2, cutoff, m, n)
+        vel1, vel2 = GetVelEps.get_velocity(velocity, k1, k2, cutoff, m, n)
+
+        return 4.4*momentum*sin(phi)^2/(pi*(k1*vel1 + k2*vel2)*sqrt((k1+k2)^2 - momentum^2))
+    end
+end
+
+function dielectric_integrand(velocity::Function,dielectric::Function, momentum::Float64, cutoff::Float64, phi::Float64)
+    ## Theta function implementation
+    if cos(phi)<=1 - 2*cutoff/momentum
+        return 0.0
+    else
+        k1 = cutoff
+        k2 = cutoff + cos(phi)*momentum
+
+        vel1 = velocity(k1)
+        vel2 = velocity(k2)
 
         return 4.4*momentum*sin(phi)^2/(pi*(k1*vel1 + k2*vel2)*sqrt((k1+k2)^2 - momentum^2))
     end

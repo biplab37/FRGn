@@ -38,7 +38,7 @@ include("SampleFunctions/Bauer.jl")
 include("SampleFunctions/BosonInShell.jl")
 include("SampleFunctions/FiniteTemp.jl")
 
-include("Functions/randomfuncitons.jl")
+include("Functions/randomfunctions.jl")
 
 ## import all the submodules
 using .Plotting
@@ -54,6 +54,6 @@ export plot_velocity, plot_dielectric
 export get_velocity, get_dielectric, fetch_value
 export rg_procedure
 export velocity_integrand, dielectric_integrand
-export Hilbert
+export Hilbert,interp
 
 end # module

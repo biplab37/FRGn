@@ -99,8 +99,9 @@ ax1 = fig1.add_subplot(111)
 ax2 = fig2.add_subplot(111)
 
 # using HDF5
+temps = [0.001,0.01,0.02,0.03,0.04,0.05,0.06,0.07,0.08,0.09]
 
-for temp in 0.01:0.01:0.09
+for temp in temps
     ## Boundary values initialisation
     velocity[:,m] .= 1.0
     dielectric[:,m] .= 1.0

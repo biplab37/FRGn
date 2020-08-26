@@ -37,6 +37,14 @@ function get_velocity(velocity::Array{Float64,2}, k::Float64, cutoff::Float64, m
     return vel
 end
 
+function get_velocity(velocity::Function,k1::Float64,k2::Float64,cutoff::Float64)
+    return velocity(k1), velocity(k2)    
+end
+
+function get_velocity(velocity::Function,k::Float64,cutoff::Float64)
+    return velocity(k)    
+end
+
 """
     get_dielectric(dielctric::Array{Float64,2}, k1::Float64, k2::Float64, cutoff::Float64, m::Int64, n::Int64)
 
@@ -70,6 +78,14 @@ function get_dielectric(dielectric::Array{Float64,2}, k::Float64, cutoff::Float6
     end
 
     return eps1
+end
+
+function get_dielectric(dielectric::Function,k1::Float64,k2::Float64,cutoff::Float64)
+    return dielectric(k1), dielectric(k2)    
+end
+
+function get_dielectric(dielectric::Function,k::Float64,cutoff::Float64)
+    return dielectric(k)    
 end
 
 """
@@ -108,6 +124,14 @@ function fetch_value(input, k::Float64, cutoff::Float64, m::Int64, n::Int64)
     end
 
     return value
+end
+
+function fetch_value(input::Function,k1::Float64,k2::Float64,cutoff::Float64,m::Int64,n::Int64)
+    return input(k1),input(k2)
+end
+
+function fetch_value(input::Function,k::Float64,cutoff::Float64,m::Int64,n::Int64)
+    return input(k)
 end
 
 end

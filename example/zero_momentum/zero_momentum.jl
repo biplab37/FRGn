@@ -1,6 +1,21 @@
-module FiniteTemp
+#########################################################################################
+###    This code solves the exact FRG equations numerically for graphene near Dirac   ###
+###    points. Here we have introduced a cutoff for the Bososnic momenta as well.     ###
+#########################################################################################
 
-export velocity_integrand_t, dielectric_integrand_t
+using FRGn
+
+## Initialisation
+
+const m = 239 # number of cutoffs
+const n = 233 # number of momenta
+
+println("Number of cutoffs taken: $m")
+println("Number of momenta taken: $n")
+
+velocity = zeros(n,m)
+dielectric = zeros(n,m)
+
 
 @doc raw"""
     velocity_integrand_t(velocity::Array{Float64,2},dielectric::Array{Float64,2}, momentum::Float64, cutoff::Float64, phi::Float64, m::Int64, n::Int64, temp::Float64)
@@ -32,23 +47,6 @@ function velocity_integrand_t(velocity::Array{Float64,2},dielectric::Array{Float
     end
 end
 
-function velocity_integrand_t(velocity::Function,dielectric::Function, momentum::Float64, cutoff::Float64, phi::Float64, m::Int64, n::Int64, temp::Float64)
-    ## Theta function implementation with conditional
-    if cos(phi)<=1 - 2*cutoff/momentum
-        return 0.0
-    else
-        k1 = cutoff
-        k2 = cutoff + cos(phi)*momentum
-
-        vel1 = velocity(k1)
-        vel2 = velocity(k2)
-        eps1 = dielectric(k1)
-        eps2 = dielectric(k2)
-
-        return 2.2*(((momentum^2 - k1^2 + k2^2)*(tanh(vel2*k2/(2.0*temp))))/(momentum^2*eps1) + ((momentum^2 + k1^2 - k2^2)*(tanh(vel1*k1/(2.0*temp))))/(momentum^2*eps2))/(2.0*pi*sqrt((k1+k2)^2 - momentum^2))
-    end
-end
-
 @doc raw"""
     dielectric_integrand_t(velocity::Array{Float64,2},dielectric::Array{Float64,2}, momentum::Float64, cutoff::Float64, phi::Float64, m::Int64, n::Int64, temp::Float64)
 
@@ -72,7 +70,7 @@ function dielectric_integrand_t(velocity::Array{Float64,2},dielectric::Array{Flo
         k1 = cutoff
         k2 = cutoff + cos(phi)*momentum
 
-        vel1, vel2 = GetVelEps.get_velocity(velocity, k1, k2, cutoff, m, n)
+        vel1, vel2 = get_velocity(velocity, k1, k2, cutoff, m, n)
         # eps1,eps2 = get_dielectric(dielectric, k1, k2, m, n, i)
 
         tanh1 = tanh(vel1*k1/(2.0*temp))
@@ -88,29 +86,47 @@ function dielectric_integrand_t(velocity::Array{Float64,2},dielectric::Array{Flo
     end
 end
 
-function dielectric_integrand_t(velocity::Function,dielectric::Function, momentum::Float64, cutoff::Float64, phi::Float64, m::Int64, n::Int64,temp::Float64)
-    ## Theta function implementation
-    if cos(phi)<=1 - 2*cutoff/momentum
-        return 0.0
-    else
-        k1 = cutoff
-        k2 = cutoff + cos(phi)*momentum
+using PyPlot
+using PyCall
 
-        vel1 = velocity(k1)
-        vel2 = velocity(k2)
-        # eps1,eps2 = get_dielectric(dielectric, k1, k2, m, n, i)
+matplotlib = pyimport("matplotlib")
+cmap = matplotlib.cm.get_cmap("coolwarm") #matplotlib colormap
 
-        tanh1 = tanh(vel1*k1/(2.0*temp))
-        tanh2 = tanh(vel2*k2/(2.0*temp))
+fig1 = figure()
+fig2 = figure()
 
-        denomin = sqrt((k1+k2)^2 - momentum^2)
+ax1 = fig1.add_subplot(111)
+ax2 = fig2.add_subplot(111)
 
-        if abs(k1*vel1 - k2*vel2)<1e-5 # the integrand has a 0/0 singular form. To regulate that we use the limiting value.
-            return 4.4*(-denomin*tanh1+ 2*k1*k2*(tanh1 + tanh2)/denomin)/(pi*momentum*(k1*vel1 + k2*vel2))
-        else
-            return 4.4*(denomin*(k2*vel2*tanh1 - k1*vel1*tanh2)/(k1*vel1 - k2*vel2) + 2*k1*k2*(tanh1 + tanh2)/denomin)/(pi*momentum*(k1*vel1 + k2*vel2))
-        end
-    end
+# using HDF5
+temps = 0.01:0.005:0.09
+list1 = []
+list2 = []
+
+for temp in temps
+    ## Boundary values initialisation
+    velocity[:,m] .= 1.0
+    dielectric[:,m] .= 1.0
+
+    velocity_integrand(velocity,dielectric,momentum,cutoff,phi,m,n) = velocity_integrand_t(velocity,dielectric,momentum,cutoff,phi,m,n,temp)
+    dielectric_integrand(velocity,dielectric,momentum,cutoff,phi,m,n) = dielectric_integrand_t(velocity,dielectric,momentum,cutoff,phi,m,n,temp)
+
+    ## solving exact FRG using an user defined function from FRGn Package
+    rg_procedure(velocity,dielectric,velocity_integrand, dielectric_integrand ,m,n)
+
+
+    append!(list1,velocity[1,1])
+    append!(list2,dielectric[1,1])
 end
 
-end
+ax1.plot(temps,list1)
+ax1.set_title("Temperature Dependence of Renormlised Velocity at k=0")
+ax1.set_xlabel(L"$t$")
+ax1.set_ylabel(L"$\dfrac{v_{\Lambda \to 0}(k \to 0)}{v_F}$")
+fig1.savefig("zero_momentum_velocity.pdf")
+
+ax2.plot(temps,list2)
+ax2.set_title("Temperature Dependence of Renormalised Dielectric Function")
+ax2.set_xlabel(L"$t$")
+ax2.set_ylabel(L"$\epsilon_{\Lambda \to 0}(q \to 0)$")
+fig2.savefig("zero_momentum_dielectric.pdf")

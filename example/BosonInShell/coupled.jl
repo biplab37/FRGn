@@ -78,9 +78,9 @@ rg_procedure(velocity,dielectric,velocity_integrand, dielectric_integrand ,m,n)
 
 ## Plots using user defined functions in FRGn Package
 
-plot_velocity(velocity[:,1])
+# plot_velocity(velocity[:,1])
 
-plot_dielectric(dielectric[:,1])
+# plot_dielectric(dielectric[:,1])
 
 ## Save the data for future usage
 # using JLD
