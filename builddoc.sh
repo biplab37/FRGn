@@ -24,3 +24,5 @@ git commit -m "building docs"
 
 # Switch Branch
 git checkout master
+
+rm -rf ../temp/
