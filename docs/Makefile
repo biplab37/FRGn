@@ -3,9 +3,6 @@ SUBFILES=$(shell echo "src/submodules/*.md")
 
 make.jl: $(FILES) $(SUBFILES)
 	julia make.jl
-
-builddoc: $(FILES) $(SUBFILES)
-	julia make.jl
 	mkdir -p ../../temp
 	cp -r build/ ../../temp/
 	git checkout gh-pages
