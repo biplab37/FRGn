@@ -3,7 +3,9 @@
 set -eu
 
 # Build docs
-julia docs/make.jl
+cd docs
+make
+cd ..
 
 # Copy files
 mkdir ../temp
