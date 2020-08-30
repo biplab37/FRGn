@@ -6,7 +6,7 @@ make.jl: $(FILES) $(SUBFILES)
 	mkdir -p ../../temp
 	cp -r build/ ../../temp/
 	git checkout gh-pages
-	cp -r ../../temp/ ./
+	cp -u -r ../../temp/ ./
 	git add .
 	git commit -m "update docs"
 	git checkout master
