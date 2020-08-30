@@ -7,13 +7,17 @@ make.jl: $(FILES) $(SUBFILES)
 builddoc: $(FILES) $(SUBFILES)
 	julia make.jl
 	mkdir -p ../../temp
-	cp -r docs/build/. ../../temp/
+	cp -r build/ ../../temp/
 	git checkout gh-pages
-	cp -r ../../temp/. ./
+	cp -r ../../temp/ ./
 	git add .
 	git commit -m "update docs"
 	git checkout master
 	rm -rf ../../temp
+
+view: $(FILES) $(SUBFILES)
+	julia make.jl
+	firefox build/index.html
 
 .PHONY: clean
 
