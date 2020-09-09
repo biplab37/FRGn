@@ -1,2 +1,2 @@
 docs/build/
-*.ipynb
+example/Dielectric/*.ipynb
