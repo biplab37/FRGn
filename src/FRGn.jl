@@ -30,6 +30,7 @@ Returns the velocities at momenta k1 and k2 at the previous cutoff (indexed m-i+
 module FRGn
 
 ## includes all the submodules
+include("Functions/randomfunctions.jl")
 include("Plotting.jl")
 include("GetVelEps.jl")
 include("RGProcedure.jl")
@@ -38,16 +39,11 @@ include("SampleFunctions/Bauer.jl")
 include("SampleFunctions/BosonInShell.jl")
 include("SampleFunctions/FiniteTemp.jl")
 
-include("Functions/randomfunctions.jl")
 
 ## import all the submodules
-using .Plotting
-using .GetVelEps
-using .RGProcedure
 using .Bauer
 using .BosonInShell
 using .FiniteTemp
-using .functions
 
 ## make the functions global
 export plot_velocity, plot_dielectric

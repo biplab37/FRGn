@@ -2,11 +2,8 @@
 # RGProcedure
 This module provides the main function which solves the exact FRG equations.
 """
-module RGProcedure
 
 using QuadGK
-
-export rg_procedure
 
 @doc raw"""
     rg_procedure(velocity::Array{Float64,2}, dielectric::Array{Float64,2}, velocity_integrand::Function, dielectric_integrand::Function, m::Int64, n::Int64)
@@ -204,32 +201,112 @@ function rg_procedure(property::Array{Float64,1},integrand_function::Function,mo
     
 end
 
+function rg_procedure_rk2(velocity::Function, dielectric::Function, velocity_integrand::Function, dielectric_integrand::Function, m::Int64,n::Int64 = 100)
 
-function itp(momentum::Float64,n::Int64,list::Array)
+    new_velocity = zeros(n)
+    new_dielectric = zeros(n)
+    dcutoff = 1/m
+    for i in 2:m
+        cutoff = Float64(m - i +1)/m
+        for j in 1:n
 
-    index1 = Int64(floor(n*momentum))
-    index2 = Int64(ceil(n*momentum))
+            momentum = Float64(j)/n
 
-    if index1==0
-        return list[1]
-    elseif index2>n
-        return list[n]
-    else
-        if index1 == index2
-            return list[index1]
-        else
-            return list[index1] + (list[index2] - list[index1])*(n*momentum - index1)
+            velocity_integrand_phi(phi::Float64) = velocity_integrand(velocity,dielectric,momentum,cutoff,phi)
+            dielectric_integrand_phi(phi::Float64) = dielectric_integrand(velocity,dielectric,momentum,cutoff,phi)
+
+            ## Solving ODE's using Euler method
+            new_velocity[j] = velocity(momentum) + 1/2*dcutoff*quadgk(velocity_integrand_phi,0.,pi/2.,rtol=1e-3)[1]
+            new_dielectric[j] = dielectric(momentum) + 1/2*dcutoff*quadgk(dielectric_integrand_phi,0.,pi/2.,rtol=1e-3)[1]
         end
+        mid_velocity = interp(n,new_velocity)
+        mid_dielectric = interp(n,new_dielectric)
+
+        for j in 1:n
+
+            momentum = Float64(j)/n
+
+            velocity_integrand_phi(phi::Float64) = velocity_integrand(mid_velocity,mid_dielectric,momentum,cutoff + 1/2*dcutoff,phi)
+            dielectric_integrand_phi(phi::Float64) = dielectric_integrand(mid_velocity,mid_dielectric,momentum,cutoff + 1/2*dcutoff,phi)
+
+            ## Solving ODE's using Euler method
+            new_velocity[j] = velocity(momentum) + dcutoff*quadgk(velocity_integrand_phi,0.,pi/2.,rtol=1e-3)[1]
+            new_dielectric[j] = dielectric(momentum) + dcutoff*quadgk(dielectric_integrand_phi,0.,pi/2.,rtol=1e-3)[1]
+        end
+        velocity = interp(n,new_velocity)
+        dielectric = interp(n,new_dielectric)
     end
+
+    return velocity, dielectric
 end
 
-@doc raw"""
-    function interp(n::Int64,list::Array)
-This function returns the interpolated function given an Array.
-"""
-function interp(n::Int64,list::Array)
-    itp2(momentum::Float64) = itp(momentum,n,list)
-    return itp2
-end
+function rg_procedure_rk4(velocity::Function, dielectric::Function, velocity_integrand::Function, dielectric_integrand::Function, m::Int64,n::Int64 = 100)
 
+    temp_velocity = zeros(n)
+    temp_dielectric = zeros(n)
+    dcutoff = 1/m
+    for i in 2:m
+        cutoff = Float64(m - i +1)/m
+        for j in 1:n
+
+            momentum = Float64(j)/n
+
+            velocity_integrand_phi(phi::Float64) = velocity_integrand(velocity,dielectric,momentum,cutoff,phi)
+            dielectric_integrand_phi(phi::Float64) = dielectric_integrand(velocity,dielectric,momentum,cutoff,phi)
+
+            ## Solving ODE's using Euler method
+            temp_velocity[j] = velocity(momentum) + 1/2*dcutoff*quadgk(velocity_integrand_phi,0.,pi/2.,rtol=1e-3)[1]
+            temp_dielectric[j] = dielectric(momentum) +1/2*dcutoff*quadgk(dielectric_integrand_phi,0.,pi/2.,rtol=1e-3)[1]
+        end
+        velocity_1 = interp(n,temp_velocity)
+        dielectric_1 = interp(n,temp_dielectric)
+
+        for j in 1:n
+
+            momentum = Float64(j)/n
+
+            velocity_integrand_phi(phi::Float64) = velocity_integrand(velocity_1,dielectric_1,momentum,cutoff + 1/2*dcutoff,phi)
+            dielectric_integrand_phi(phi::Float64) = dielectric_integrand(velocity_1,dielectric_1,momentum,cutoff + 1/2*dcutoff,phi)
+
+            ## Solving ODE's using Euler method
+            temp_velocity[j] = velocity(momentum) + 1/2*dcutoff*quadgk(velocity_integrand_phi,0.,pi/2.,rtol=1e-3)[1]
+            temp_dielectric[j] = dielectric(momentum) +1/2*dcutoff*quadgk(dielectric_integrand_phi,0.,pi/2.,rtol=1e-3)[1]
+        end
+        velocity_2 = interp(n,temp_velocity)
+        dielectric_2 = interp(n,temp_dielectric)
+
+        for j in 1:n
+
+            momentum = Float64(j)/n
+
+            velocity_integrand_phi(phi::Float64) = velocity_integrand(velocity_2,dielectric_2,momentum,cutoff + 1/2*dcutoff,phi)
+            dielectric_integrand_phi(phi::Float64) = dielectric_integrand(velocity_2,dielectric_2,momentum,cutoff + 1/2*dcutoff,phi)
+
+            ## Solving ODE's using Euler method
+            temp_velocity[j] = velocity(momentum) + dcutoff*quadgk(velocity_integrand_phi,0.,pi/2.,rtol=1e-3)[1]
+            temp_dielectric[j] = dielectric(momentum) + dcutoff*quadgk(dielectric_integrand_phi,0.,pi/2.,rtol=1e-3)[1]
+        end
+        velocity_3 = interp(n,temp_velocity)
+        dielectric_3 = interp(n,temp_dielectric)
+
+        for j in 1:n
+
+            momentum = Float64(j)/n
+
+            velocity_integrand_phi(phi::Float64) = velocity_integrand(velocity_3,dielectric_3,momentum,cutoff+dcutoff,phi)
+            dielectric_integrand_phi(phi::Float64) = dielectric_integrand(velocity_3,dielectric_3,momentum,cutoff+dcutoff,phi)
+
+            ## Solving ODE's using Euler method
+            temp_velocity[j] =  velocity(momentum) - 1/2*dcutoff*quadgk(velocity_integrand_phi,0.,pi/2.,rtol=1e-3)[1]
+            temp_dielectric[j] =  dielectric(momentum) - 1/2*dcutoff*quadgk(dielectric_integrand_phi,0.,pi/2.,rtol=1e-3)[1]
+        end
+        velocity_4 = interp(n,temp_velocity)
+        dielectric_4 = interp(n,temp_dielectric)
+
+        velocity_5(x) = 1/3*(velocity_1(x) + 2*velocity_2(x) + velocity_3(x) - velocity_4(x))
+        dielectric_5(x) = 1/3*(dielectric_1(x) + 2*dielectric_2(x) + dielectric_3(x) - dielectric_4(x))
+        velocity,dielectric = velocity_5,dielectric_5
+    end
+
+    return velocity, dielectric
 end

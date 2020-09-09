@@ -1,12 +1,9 @@
 @doc raw"""
 contains some of the useful functions that I use frequently.
 """
-module functions
 
 using PyCall
 # using JLD, HDF5
-
-export Hilbert, interp
 
 @doc raw"""
     Hilbert(list::Array{Float,1})
@@ -68,6 +65,4 @@ This function returns the interpolated function given an Array.
 function interp(n::Int64,list::Array)
     itp2(momentum::Float64) = itp(momentum,n,list)
     return itp2
-end
-
 end

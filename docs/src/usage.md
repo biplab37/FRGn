@@ -64,3 +64,7 @@ To visulaise the result one can plot the resultant observables for specific case
 plot_velocity(velocity[:,1],"renormalised_velocity.png")
 ``` 
 this will also save the figure in the given name. Omiting that variable will not save the figure.
+
+## Further Examples
+
+Further examples are given in the [example section](https://github.com/biplab37/FRGn/blob/master/example) of the code.

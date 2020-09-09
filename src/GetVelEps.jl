@@ -1,6 +1,3 @@
-module GetVelEps
-
-export get_velocity, get_dielectric, fetch_value
 
 """
     get_velocity(velocity::Array{Float64,2}, k1::Float64, k2::Float64, cutoff::Float64, m::Int64, n::Int64)
@@ -132,6 +129,4 @@ end
 
 function fetch_value(input::Function,k::Float64,cutoff::Float64,m::Int64,n::Int64)
     return input(k)
-end
-
 end

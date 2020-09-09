@@ -2,6 +2,8 @@ module FiniteTemp
 
 export velocity_integrand_t, dielectric_integrand_t
 
+include("../GetVelEps.jl")
+
 @doc raw"""
     velocity_integrand_t(velocity::Array{Float64,2},dielectric::Array{Float64,2}, momentum::Float64, cutoff::Float64, phi::Float64, m::Int64, n::Int64, temp::Float64)
 
@@ -72,7 +74,7 @@ function dielectric_integrand_t(velocity::Array{Float64,2},dielectric::Array{Flo
         k1 = cutoff
         k2 = cutoff + cos(phi)*momentum
 
-        vel1, vel2 = GetVelEps.get_velocity(velocity, k1, k2, cutoff, m, n)
+        vel1, vel2 = get_velocity(velocity, k1, k2, cutoff, m, n)
         # eps1,eps2 = get_dielectric(dielectric, k1, k2, m, n, i)
 
         tanh1 = tanh(vel1*k1/(2.0*temp))

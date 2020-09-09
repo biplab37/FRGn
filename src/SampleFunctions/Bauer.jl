@@ -22,7 +22,7 @@ function velocity_integrand(velocity::Array{Float64,2},dielectric::Array{Float64
 
     k = sqrt(cutoff^2 + momentum^2 - 2*cutoff*momentum*cos(2.0*phi))
 
-    epsilon = GetVelEps.get_dielectric(dielectric,k,cutoff,m,n)
+    epsilon = get_dielectric(dielectric,k,cutoff,m,n)
 
     if k==0
         return 0.0
@@ -66,7 +66,7 @@ function dielectric_integrand(velocity::Array{Float64,2},dielectric::Array{Float
         k1 = cutoff
         k2 = cutoff + cos(phi)*momentum
 
-        vel1, vel2 = GetVelEps.get_velocity(velocity, k1, k2, cutoff, m, n)
+        vel1, vel2 = get_velocity(velocity, k1, k2, cutoff, m, n)
 
         return 4.4*momentum*sin(phi)^2/(pi*(k1*vel1 + k2*vel2)*sqrt((k1+k2)^2 - momentum^2))
     end

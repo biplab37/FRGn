@@ -11,12 +11,8 @@ julia> plot_velocity(data, "filename")
 julia> plot_dielectric(data, "filename")
 ```
 """
-module Plotting
-
 
 using PyPlot # imports the matplotlib plotting routine
-
-export plot_velocity,plot_dielectric
 
 @doc raw"""
     plot_velocity(velocity[,name])
@@ -62,6 +58,4 @@ function plot_dielectric(dielectric,name="")
     if name != ""
         savefig(name)
     end
-end
-
 end
