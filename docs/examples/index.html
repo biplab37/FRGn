@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content=
 "width=device-width, initial-scale=1.0">
-<title>Search · FRGn</title>
+<title>Examples · FRGn</title>
 <link href=
 "https://fonts.googleapis.com/css?family=Lato|Roboto+Mono" rel=
 "stylesheet" type="text/css">
@@ -47,7 +47,7 @@ href="../assets/themes/documenter-light.css" data-theme-name=
 <nav class="docs-sidebar">
 <div class="docs-package-name"><span class=
 "docs-autofit">FRGn</span></div>
-<form class="docs-search" action=""><input class=
+<form class="docs-search" action="../search/"><input class=
 "docs-search-query" id="documenter-search-query" name="q" type=
 "text" placeholder="Search docs"></form>
 <ul class="docs-menu">
@@ -55,7 +55,7 @@ href="../assets/themes/documenter-light.css" data-theme-name=
 <li><a class="tocitem" href=
 "../installation/">Installation</a></li>
 <li><a class="tocitem" href="../usage/">Usage</a></li>
-<li><a class="tocitem" href="../examples/">Examples</a></li>
+<li class="is-active"><a class="tocitem" href="">Examples</a></li>
 </ul>
 <div class="docs-version-selector field has-addons">
 <div class="control"><span class=
@@ -70,23 +70,46 @@ href="../assets/themes/documenter-light.css" data-theme-name=
 <header class="docs-navbar">
 <nav class="breadcrumb">
 <ul class="is-hidden-mobile">
-<li class="is-active"><a href="">Search</a></li>
+<li class="is-active"><a href="">Examples</a></li>
 </ul>
 <ul class="is-hidden-tablet">
-<li class="is-active"><a href="">Search</a></li>
+<li class="is-active"><a href="">Examples</a></li>
 </ul>
 </nav>
-<div class="docs-right"><a class="docs-settings-button fas fa-cog"
-id="documenter-settings-button" href="#" title=
-"Settings"></a><a class=
+<div class="docs-right"><a class="docs-edit-link" href=
+"https://github.com/biplab37/FRGn/blob/master/docs/src/examples.md"
+title="Edit on GitHub"><span class=
+"docs-icon fab"></span><span class=
+"docs-label is-hidden-touch">Edit on GitHub</span></a><a class=
+"docs-settings-button fas fa-cog" id="documenter-settings-button"
+href="#" title="Settings"></a><a class=
 "docs-sidebar-button fa fa-bars is-hidden-desktop" id=
 "documenter-sidebar-button" href="#"></a></div>
 </header>
-<article>
-<p id="documenter-search-info">Loading search...</p>
-<ul id="documenter-search-results"></ul>
+<article class="content" id="documenter-page">
+<h1 id="Examples"><a class="docs-heading-anchor" href=
+"#Examples">Examples</a><a id="Examples-1"></a><a class=
+"docs-heading-anchor-permalink" href="#Examples" title=
+"Permalink"></a></h1>
+<p>Further examples can be found in the <a href=
+"https://github.com/biplab37/FRGn/blob/master/example">example
+section</a> of the code.</p>
+<ul>
+<li><a href=
+"https://github.com/biplab37/FRGn/blob/master/example/Bauer/bauer.jl">
+Bauer</a></li>
+<li><a href=
+"https://github.com/biplab37/FRGn/blob/master/example/BosonInShell/coupled.jl">
+Boson In Shell</a></li>
+<li><a href=
+"https://github.com/biplab37/FRGn/blob/master/example/Finite_Temperature/finite_temp.jl">
+Finite Temperature</a></li>
+</ul>
 </article>
-<nav class="docs-footer">
+<nav class="docs-footer"><a class="docs-footer-prevpage" href=
+"../usage/">« Usage</a><a class="docs-footer-nextpage" href=
+"../indices/">Indices »</a>
+<div class="flexbox-break"></div>
 <p class="footer-message">Powered by <a href=
 "https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and
 the <a href="https://julialang.org/">Julia Programming
@@ -116,9 +139,5 @@ Language</a>.</p>
 </div>
 </div>
 </div>
-<script src="../search_index.js">
-</script>
-<script src="../assets/search.js">
-</script>
 </body>
 </html>
