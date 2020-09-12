@@ -9,5 +9,5 @@ makedocs(modules=[FRGn],
 		"Installation"=>"installation.md",
 		"Usage"=>"usage.md",
 		"Examples"=>"examples.md",
-		hide("SubModules"=>["submodules/getveleps.md","submodules/plotting.md","submodules/rgprocedure.md"]),
+		#hide("SubModules"=>["submodules/getveleps.md","submodules/plotting.md","submodules/rgprocedure.md"]),
 		hide("Indices"=>"indices.md")])

@@ -2,13 +2,15 @@ FILES=$(shell echo "src/*.md")
 SUBFILES=$(shell echo "src/submodules/*.md")
 
 make.jl: $(FILES) $(SUBFILES)
+	date=`date`
 	julia make.jl
+	formathtml .
 	mkdir -p ../../temp
-	cp -r build/ ../../temp/
+	cp -r build/. ../../temp/
 	git checkout gh-pages
-	cp -u -r ../../temp/ ./
+	smartcopy ../../temp/ ./
 	git add .
-	git commit -m "update docs"
+	git commit -m "updated docs ${date}"
 	git checkout master
 	rm -rf ../../temp
 
