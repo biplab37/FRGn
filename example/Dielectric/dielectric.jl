@@ -52,6 +52,7 @@ begin
 	xlabel(L"$\dfrac{k}{Λ_0}$")
 	ylabel(L"$A_q$")
 	gcf()
+	savefig("renormalisedAq.pdf")
 end
 
 # ╔═╡ 6dd6c058-eea4-11ea-0b87-87b66cd6f395
@@ -62,6 +63,7 @@ begin
 	xlabel(L"$\dfrac{k}{Λ_0}$")
 	ylabel(L"$ω_q$")
 	gcf()
+	savefig("renormalisedomegaq.pdf")
 end
 
 # ╔═╡ 962946b6-eea4-11ea-3787-857a5e4944ba
@@ -93,6 +95,7 @@ begin
 	ax2.legend();
 
 	gcf()
+	savefig("Renormalisationprocess.pdf")
 end
 
 # ╔═╡ Cell order:

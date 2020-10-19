@@ -1,4 +1,4 @@
-# User Guide
+## User Guide
 
 ```@contents
 Pages = ["usage.md"]
