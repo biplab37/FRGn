@@ -67,4 +67,4 @@ this will also save the figure in the given name. Omitting that variable will no
 
 ## Further Examples
 
-Further examples are given in the [example section](https://github.com/biplab37/FRGn/blob/master/example) of the code.
+Further examples are given in the [example page](examples.md).

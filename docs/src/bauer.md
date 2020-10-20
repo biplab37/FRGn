@@ -10,7 +10,7 @@ $\Lambda\partial_{\Lambda}v_{\Lambda}(k) = -\dfrac{e^2}{4\pi} \dfrac{\Lambda}{k}
 
 This equation can be turned into the usual form by substitution $\phi=2\varphi$.
 
-$\partial_{\Lambda}\epsilon_{\Lambda}(q) = \dfrac{2\pi e^2}{q} \partial_{\Lambda}\Pi_{\Lambda}(q) =  -\dfrac{2e^2}{\pi}\int_{0}^{\frac{\pi}{2}}d\nu \dfrac{\theta(\frac{2\Lambda}{q}+\cos\nu-1)}{v_{\Lambda}(\Lambda)\Lambda + (\Lambda + q\cos(\nu))v_{\Lambda}(\Lambda+q\cos(\nu))}\nonumber \times \dfrac{q\sin^2(\nu)}{\sqrt{(2\Lambda + q \cos(\nu))^2 - q^2}}$
+$\partial_{\Lambda}\epsilon_{\Lambda}(q) = \dfrac{2\pi e^2}{q} \partial_{\Lambda}\Pi_{\Lambda}(q) =  -\dfrac{2e^2}{\pi}\int_{0}^{\frac{\pi}{2}}d\nu \dfrac{\theta(\frac{2\Lambda}{q}+\cos\nu-1)}{v_{\Lambda}(\Lambda)\Lambda + (\Lambda + q\cos(\nu))v_{\Lambda}(\Lambda+q\cos(\nu))} \\ \times \dfrac{q\sin^2(\nu)}{\sqrt{(2\Lambda + q \cos(\nu))^2 - q^2}}$
 
 ## The Code
 
@@ -101,5 +101,5 @@ Both the methods internally uses the same methods but as this method uses interp
 ## Results
 
 | Renormalised Velocity                                       | Renormalised Dielectric                                      |
-| ----------------------------------------------------------- | ------------------------------------------------------------ |
-| ![](https://github.com/biplab37/FRGn/blob/master/example/Bauer/bauer_renormalised_velocity.png) | ![](https://github.com/biplab37/FRGn/blob/master/example/Bauer/bauer_renormalised_dielectric.png) |
+| :---------------------------------------------------------: | :----------------------------------------------------------: |
+| ![](https://raw.githubusercontent.com/biplab37/FRGn/master/example/Bauer/bauer_renormalised_velocity.png) | ![](https://raw.githubusercontent.com/biplab37/FRGn/master/example/Bauer/bauer_renormalised_dielectric.png) |
