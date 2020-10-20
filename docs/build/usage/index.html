@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="generator" content=
+"HTML Tidy for HTML5 for Linux version 5.2.0">
+<meta charset="UTF-8">
+<meta name="viewport" content=
+"width=device-width, initial-scale=1.0">
+<title>Usage · FRGn</title>
+<link href=
+"https://fonts.googleapis.com/css?family=Lato|Roboto+Mono" rel=
+"stylesheet" type="text/css">
+<link href=
+"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/fontawesome.min.css"
+rel="stylesheet" type="text/css">
+<link href=
+"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/solid.min.css"
+rel="stylesheet" type="text/css">
+<link href=
+"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/brands.min.css"
+rel="stylesheet" type="text/css">
+<link href=
+"https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css"
+rel="stylesheet" type="text/css">
+<script>
+documenterBaseURL=".."
+</script>
+<script src=
+"https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"
+data-main="../assets/documenter.js">
+</script>
+<script src="../siteinfo.js">
+</script>
+<script src="../../versions.js">
+</script>
+<link class="docs-theme-link" rel="stylesheet" type="text/css"
+href="../assets/themes/documenter-dark.css" data-theme-name=
+"documenter-dark">
+<link class="docs-theme-link" rel="stylesheet" type="text/css"
+href="../assets/themes/documenter-light.css" data-theme-name=
+"documenter-light">
+<script src="../assets/themeswap.js">
+</script>
+</head>
+<body>
+<div id="documenter">
+<nav class="docs-sidebar">
+<div class="docs-package-name"><span class=
+"docs-autofit">FRGn</span></div>
+<form class="docs-search" action="../search/"><input class=
+"docs-search-query" id="documenter-search-query" name="q" type=
+"text" placeholder="Search docs"></form>
+<ul class="docs-menu">
+<li><a class="tocitem" href="../">Home</a></li>
+<li><a class="tocitem" href=
+"../installation/">Installation</a></li>
+<li class="is-active"><a class="tocitem" href="">Usage</a>
+<ul class="internal">
+<li><a class="tocitem" href="#User-Guide"><span>User
+Guide</span></a></li>
+<li><a class="tocitem" href=
+"#Preparation"><span>Preparation</span></a></li>
+<li><a class="tocitem" href=
+"#Initialisation"><span>Initialisation</span></a></li>
+<li><a class="tocitem" href="#Define-integrands"><span>Define
+integrands</span></a></li>
+<li><a class="tocitem" href=
+"#Solving"><span>Solving</span></a></li>
+<li><a class="tocitem" href="#Visualize-Results"><span>Visualize
+Results</span></a></li>
+<li><a class="tocitem" href="#Further-Examples"><span>Further
+Examples</span></a></li>
+</ul>
+</li>
+<li><a class="tocitem" href="../examples/">Examples</a></li>
+</ul>
+<div class="docs-version-selector field has-addons">
+<div class="control"><span class=
+"docs-label button is-static is-size-7">Version</span></div>
+<div class="docs-selector control is-expanded">
+<div class="select is-fullwidth is-size-7"><select id=
+"documenter-version-selector"></select></div>
+</div>
+</div>
+</nav>
+<div class="docs-main">
+<header class="docs-navbar">
+<nav class="breadcrumb">
+<ul class="is-hidden-mobile">
+<li class="is-active"><a href="">Usage</a></li>
+</ul>
+<ul class="is-hidden-tablet">
+<li class="is-active"><a href="">Usage</a></li>
+</ul>
+</nav>
+<div class="docs-right"><a class="docs-edit-link" href=
+"https://github.com/biplab37/FRGn/blob/master/docs/src/usage.md"
+title="Edit on GitHub"><span class=
+"docs-icon fab"></span><span class=
+"docs-label is-hidden-touch">Edit on GitHub</span></a><a class=
+"docs-settings-button fas fa-cog" id="documenter-settings-button"
+href="#" title="Settings"></a><a class=
+"docs-sidebar-button fa fa-bars is-hidden-desktop" id=
+"documenter-sidebar-button" href="#"></a></div>
+</header>
+<article class="content" id="documenter-page">
+<h2 id="User-Guide"><a class="docs-heading-anchor" href=
+"#User-Guide">User Guide</a><a id="User-Guide-1"></a><a class=
+"docs-heading-anchor-permalink" href="#User-Guide" title=
+"Permalink"></a></h2>
+<div style="margin-left: 2em">
+<ul>
+<li><a href="#User-Guide">User Guide</a></li>
+<li><a href="#Preparation">Preparation</a></li>
+<li><a href="#Initialisation">Initialisation</a></li>
+<li><a href="#Define-integrands">Define integrands</a></li>
+<li><a href="#Solving">Solving</a></li>
+<li><a href="#Visualize-Results">Visualize Results</a></li>
+<li><a href="#Further-Examples">Further Examples</a></li>
+</ul>
+</div>
+<p>To be able solve exact FRG equations one need to follow the
+steps below.</p>
+<h2 id="Preparation"><a class="docs-heading-anchor" href=
+"#Preparation">Preparation</a><a id="Preparation-1"></a><a class=
+"docs-heading-anchor-permalink" href="#Preparation" title=
+"Permalink"></a></h2>
+<p>Before starting coding one need to do the necessary analytical
+calculations in order to obtain the exact FRG equations that one
+wants to solve. Then one need to simplify the equations such as to
+mold them into the following form</p>
+<div>\[\partial_{\Lambda}f_i =
+\int_{0}^{\pi/2}\hat{f_i}(\phi)d\phi\]</div>
+<p>where <span>$f_i$</span>'s are the observables that we want to
+solve and <span>$\hat{f_i}$</span> are the integrands corresponding
+to the observables. Note the limit of the integration is from
+<span>$0$</span> to <span>$\pi/2$</span>. If one needs to solve a
+problem which can not be turned into this form please raise an
+issue. Once we have the closed set of equations we are ready to
+solve them.</p>
+<h2 id="Initialisation"><a class="docs-heading-anchor" href=
+"#Initialisation">Initialisation</a><a id=
+"Initialisation-1"></a><a class="docs-heading-anchor-permalink"
+href="#Initialisation" title="Permalink"></a></h2>
+<p>Note that the observables <span>$f_i$</span>'s are dependent on
+the momentum and the running cutoff. So we would like them to store
+in a 2-dimensional array. So the code would look something like</p>
+<pre><code class="language-julia">using FRGn
+
+m = 123 # no of cutoffs
+n = 456 # no of momenta
+
+observable1 = zeros(n,m)
+observable2 = zeros(n,m)
+...</code></pre>
+<h2 id="Define-integrands"><a class="docs-heading-anchor" href=
+"#Define-integrands">Define integrands</a><a id=
+"Define-integrands-1"></a><a class="docs-heading-anchor-permalink"
+href="#Define-integrands" title="Permalink"></a></h2>
+<p>Once the observables are defined the integrands on the rhs of
+FRG equation have to be provided. This should be done as a function
+of the following form</p>
+<pre><code class=
+"language-julia">function integrand1(observable1 ,observable2, momentum, cutoff, phi, m, n) 
+        ...
+end</code></pre>
+<h2 id="Solving"><a class="docs-heading-anchor" href=
+"#Solving">Solving</a><a id="Solving-1"></a><a class=
+"docs-heading-anchor-permalink" href="#Solving" title=
+"Permalink"></a></h2>
+<p>Before solving the differential equations we need to supply the
+boundary condition. Boundary condition are comes from the fact that
+we know the observables at the highest cutoff i.e. before starting
+the renormalisation group procedure. For example</p>
+<pre><code class=
+"language-julia">observable1[:,m] .= 1</code></pre>
+<p>where we redefined the variable so that the value of observable
+was unity at the highest cutoff.</p>
+<p>Finally, to solve the FRG equations we call the
+<code>rg_procedure</code> funciton</p>
+<pre><code class=
+"language-julia">rg_procedure(observable1, observable2, integrand1, integrand2, m, n)</code></pre>
+<p>This will update the observables in place.</p>
+<h2 id="Visualize-Results"><a class="docs-heading-anchor" href=
+"#Visualize-Results">Visualize Results</a><a id=
+"Visualize-Results-1"></a><a class="docs-heading-anchor-permalink"
+href="#Visualize-Results" title="Permalink"></a></h2>
+<p>To visualize the result one can plot the resultant observables
+for specific cases using <code>Plots</code> or <code>PyPlot</code>.
+Here we provide two simple function to plot the renormlised
+velocity and dielectric function as follows</p>
+<pre><code class=
+"language-julia">plot_velocity(velocity[:,1],"renormalised_velocity.png")</code></pre>
+<p>this will also save the figure in the given name. Omitting that
+variable will not save the figure.</p>
+<h2 id="Further-Examples"><a class="docs-heading-anchor" href=
+"#Further-Examples">Further Examples</a><a id=
+"Further-Examples-1"></a><a class="docs-heading-anchor-permalink"
+href="#Further-Examples" title="Permalink"></a></h2>
+<p>Further examples are given in the <a href=
+"https://github.com/biplab37/FRGn/blob/master/example">example
+section</a> of the code.</p>
+</article>
+<nav class="docs-footer"><a class="docs-footer-prevpage" href=
+"../installation/">« Installation</a><a class=
+"docs-footer-nextpage" href="../examples/">Examples »</a>
+<div class="flexbox-break"></div>
+<p class="footer-message">Powered by <a href=
+"https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and
+the <a href="https://julialang.org/">Julia Programming
+Language</a>.</p>
+</nav>
+</div>
+<div class="modal" id="documenter-settings">
+<div class="modal-background"></div>
+<div class="modal-card">
+<header class="modal-card-head">
+<p class="modal-card-title">Settings</p>
+</header>
+<section class="modal-card-body">
+<p><label class="label">Theme</label></p>
+<div class="select"><select id="documenter-themepicker">
+<option value="documenter-light">documenter-light</option>
+<option value="documenter-dark">documenter-dark</option>
+</select></div>
+<hr>
+<p>This document was generated with <a href=
+"https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on
+<span class="colophon-date" title=
+"Tuesday 20 October 2020 18:53">Tuesday 20 October 2020</span>.
+Using Julia version 1.4.0.</p>
+</section>
+<footer class="modal-card-foot"></footer>
+</div>
+</div>
+</div>
+</body>
+</html>
