@@ -8,11 +8,11 @@ To be able  solve exact FRG equations one need to follow the steps below.
 
 ## Preparation
 
-Before starting coding one need to do the necessary analytical calculations in order to obtain the exact FRG equations that one wants to solve. Then one need to simplify the equations such as to mould them into the following form
+Before starting coding one need to do the necessary analytical calculations in order to obtain the exact FRG equations that one wants to solve. Then one need to simplify the equations such as to mold them into the following form
 
-$\partial_{\Lambda}f_i = \int_0^{\pi/2}\hat{f_i}$
+$\partial_{\Lambda}f_i = \int_{0}^{\pi/2}\hat{f_i}(\phi)d\phi$
 
-where $f_i$'s are the observables that we want to solve and $\hat{f_i}$ are the integrands corrosponding to the observables. Note the limit of the integration is from $0$ to $\pi/2$. If one needs to solve a problem which can not be turned into this form please raise an issue. Once we have the closed set of equations we are ready to solve them.
+where $f_i$'s are the observables that we want to solve and $\hat{f_i}$ are the integrands corresponding to the observables. Note the limit of the integration is from $0$ to $\pi/2$. If one needs to solve a problem which can not be turned into this form please raise an issue. Once we have the closed set of equations we are ready to solve them.
 
 ## Initialisation
 
@@ -23,10 +23,10 @@ using FRGn
 
 m = 123 # no of cutoffs
 n = 456 # no of momenta
+
 observable1 = zeros(n,m)
 observable2 = zeros(n,m)
 ...
-
 ```
 
 
@@ -49,7 +49,7 @@ observable1[:,m] .= 1
 ```
 where we redefined the variable so that the value of observable was unity at the highest cutoff.
 
-Finally, to solve the FRG equations we call the *rg_procedure* funciton
+Finally, to solve the FRG equations we call the `rg_procedure` funciton
 
 ```julia
 rg_procedure(observable1, observable2, integrand1, integrand2, m, n)
@@ -57,13 +57,13 @@ rg_procedure(observable1, observable2, integrand1, integrand2, m, n)
 
 This will update the observables in place.
 
-## Visualise Results
+## Visualize Results
 
-To visulaise the result one can plot the resultant observables for specific cases using *Plots* or *PyPlot*. Here we provide two simple function to plot the renormlised velocity and dielectric function as follows
+To visualize the result one can plot the resultant observables for specific cases using `Plots` or `PyPlot`. Here we provide two simple function to plot the renormlised velocity and dielectric function as follows
 ```julia
 plot_velocity(velocity[:,1],"renormalised_velocity.png")
-``` 
-this will also save the figure in the given name. Omiting that variable will not save the figure.
+```
+this will also save the figure in the given name. Omitting that variable will not save the figure.
 
 ## Further Examples
 
