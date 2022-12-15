@@ -31,7 +31,7 @@ module FRGn
 
 ## includes all the submodules
 include("Functions/randomfunctions.jl")
-include("Plotting.jl")
+# include("Plotting.jl")
 include("GetVelEps.jl")
 include("RGProcedure.jl")
 
