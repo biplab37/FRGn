@@ -46,7 +46,7 @@ using .BosonInShell
 using .FiniteTemp
 
 ## make the functions global
-export plot_velocity, plot_dielectric
+# export plot_velocity, plot_dielectric
 export get_velocity, get_dielectric, fetch_value
 export rg_procedure
 export velocity_integrand, dielectric_integrand

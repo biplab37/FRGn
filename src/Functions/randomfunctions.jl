@@ -2,7 +2,7 @@
 contains some of the useful functions that I use frequently.
 """
 
-using PyCall
+# using PyCall
 # using JLD, HDF5
 
 @doc raw"""
@@ -10,24 +10,24 @@ using PyCall
 
 This function return the hilbert transformation of a given list
 """
-function Hilbert(list::Array{Float64,1})
+# function Hilbert(list::Array{Float64,1})
 
-    ft = pyimport("scipy.fftpack")
+#     ft = pyimport("scipy.fftpack")
     
-    return ft.hilbert(list)
-end
+#     return ft.hilbert(list)
+# end
 
 @doc raw"""
     get_colormap(cmap::String)
 
 This function returns the colormap from matplotlib given a string for the name of the colormap. Default is "coolwarm"
 """
-function get_colormap(cmap::String = "coolwarm")
+# function get_colormap(cmap::String = "coolwarm")
 
-	cm = pyimport("matplotlib.cm")
+# 	cm = pyimport("matplotlib.cm")
 
-	return cm.get_cmap(cmap)
-end
+# 	return cm.get_cmap(cmap)
+# end
 
 # function load(filename::String, name::String)
 
