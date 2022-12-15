@@ -1,3 +1,4 @@
+push!(LOAD_PATH,"../src/")
 using Documenter, FRGn
 
 
@@ -12,3 +13,5 @@ makedocs(modules=[FRGn],
 		#hide("SubModules"=>["submodules/getveleps.md","submodules/plotting.md","submodules/rgprocedure.md"]),
 		hide("Indices"=>"indices.md"),
 		hide("Bauer"=>"bauer.md")])
+
+deploydocs(repo="https://github.com/biplab37/FRGn")
