@@ -14,4 +14,4 @@ makedocs(modules=[FRGn],
 		hide("Indices"=>"indices.md"),
 		hide("Bauer"=>"bauer.md")])
 
-# deploydocs(repo="https://github.com/biplab37/FRGn")
+deploydocs(repo="https://github.com/biplab37/FRGn")
