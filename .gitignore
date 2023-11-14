@@ -3,3 +3,4 @@ example/Dielectric/*.ipynb
 .ipynb_checkpoints/
 .vscode/
 Manifest.toml
+work/

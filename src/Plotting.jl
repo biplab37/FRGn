@@ -11,7 +11,7 @@ julia> plot_velocity(data, "filename")
 julia> plot_dielectric(data, "filename")
 ```
 """
-## TODO Replace these with plot recipes.
+## TODO: Replace these with plot recipes.
 
 @doc raw"""
     plot_velocity(velocity[,name])
@@ -24,10 +24,10 @@ julia> plot_velocity(velocity,"renormalised_velocity.pdf")
 ```
 
 """
-function plot_velocity(velocity,name="")
-    
+function plot_velocity(velocity, name="")
+
     figure()
-    plot(range(0.0,stop=1.0,length=length(velocity)),velocity,label="velocity")
+    plot(range(0.0, stop=1.0, length=length(velocity)), velocity, label="velocity")
     title("Renormalised Velocity")
     xlabel(L"$k/\Lambda_0$")
     ylabel(L"$\dfrac{v_{\Lambda \to 0}(k)}{v_F}$")
@@ -47,9 +47,9 @@ Plots the dielectric as a function of momentum and automatically labels the grap
 julia> plot_dielectric(dielectric,"renormalised_dielectric.pdf")
 ```
 """
-function plot_dielectric(dielectric,name="")
+function plot_dielectric(dielectric, name="")
     figure()
-    plot(range(0.,stop=1.,length=length(dielectric)),dielectric,label="dielectric")
+    plot(range(0.0, stop=1.0, length=length(dielectric)), dielectric, label="dielectric")
     title("Renormalised Dielectric Function")
     xlabel(L"$q/\Lambda_0$")
     ylabel(L"$\epsilon_{\Lambda \to 0}(q)$")
